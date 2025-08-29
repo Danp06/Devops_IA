@@ -1,0 +1,20 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+      - data/raw/
+      - src/prepare.py
+    outs:
+      - data/interim/train_plus_sample.csv
+
+  train:
+    cmd: python src/train.py --params params.yaml
+    deps:
+      - data/interim/train_plus_sample.csv
+      - src/train.py
+      - params.yaml
+    outs:
+      - models/model.pkl
+    metrics:
+      - metrics/train.json:
+          cache: false
